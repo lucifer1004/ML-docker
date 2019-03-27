@@ -57,7 +57,7 @@ COPY config.py config.py
 
 COPY mycert.pem mycert.pem
 
-RUN chmod +x entrypoint.sh
+RUN sudo chmod +x entrypoint.sh
 
 EXPOSE 8888
 
