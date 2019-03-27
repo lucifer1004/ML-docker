@@ -42,4 +42,4 @@ RUN chmod +x entrypoint.sh
 
 EXPOSE 8888
 
-ENTRYPOINT [ "/usr/bin/bash", "entrypoint.sh" ]
+ENTRYPOINT [ "/bin/bash", "entrypoint.sh" ]
