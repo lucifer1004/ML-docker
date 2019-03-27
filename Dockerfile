@@ -1,5 +1,11 @@
 FROM nvidia/cuda:10.0-cudnn7-runtime
 
+LABEL author="Gabriel Wu"
+
+ENV UNAME gabriel
+
+ENV HOME /home/${UNAME}
+
 RUN apt-get update && \
   apt-get install -y \
   gdal-bin \
@@ -9,7 +15,8 @@ RUN apt-get update && \
   libxrender1 \
   python3 \
   python3-pip \
-  python3-gdal
+  python3-gdal \
+  sudo
 
 RUN pip3 install \
   bokeh \
@@ -28,9 +35,21 @@ RUN pip3 install \
   torch \
   torchvision
 
-RUN jupyter contrib nbextension install 
+RUN jupyter contrib nbextension install
 
-WORKDIR /home
+RUN export UNAME=${UNAME} UID=1000 GID=1000 && \
+    mkdir -p "/home/${UNAME}" && \
+    echo "${UNAME}:x:${UID}:${GID}:${UNAME} User,,,:/home/${UNAME}:/bin/bash" >> /etc/passwd && \
+    echo "${UNAME}:x:${UID}:" >> /etc/group && \
+    mkdir -p /etc/sudoers.d && \
+    echo "${UNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${UNAME} && \
+    chmod 0440 /etc/sudoers.d/${UNAME} && \
+    chown ${UID}:${GID} -R /home/${UNAME} && \
+    gpasswd -a ${UNAME} audio
+
+USER ${UNAME}
+
+WORKDIR ${HOME}
 
 COPY entrypoint.sh entrypoint.sh
 
