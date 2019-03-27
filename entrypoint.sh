@@ -1,3 +1,3 @@
-#!/usr/bin/env bash
+#!/bin/env bash
 
 jupyter notebook --config=./config.py

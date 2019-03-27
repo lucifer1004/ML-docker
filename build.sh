@@ -1,3 +1,3 @@
-#!/usr/bin/env bash
+#!s/bin/env bash
 
 docker build -t lucifer1004/machine-learning .
